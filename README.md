@@ -1,28 +1,33 @@
 # 项目说明
 
-##一、项目运行步骤
+## 一、项目运行步骤
+
 ### 1.下载IDEA
 
 最好是付费版，申请学生账号
 
 ### 2.配置JDK
 
-File -> Project Structure -> SDKs -> '+'
--> Download JDK... -> 版本选1.8 ->Eclipse Temurin (AdoptOpenJDK HotSpot)
+File -> Project Structure -> SDKs -> '+'->
+
+Download JDK... -> 版本选1.8 ->Eclipse Temurin (AdoptOpenJDK HotSpot)
 
 ### 3.配置数据库
-####(1)下载并安装MySQL 8.0
-####(2)手动建数据库，初始化测试数据
+#### (1)下载并安装MySQL 8.0
+
+#### (2)手动建数据库，初始化测试数据
+
 使用src/main/resources/database.sql的语句初始化数据库
-####(3)配置项目连接数据库的账号密码
-打开src/main/resources/application-datasource.yml，
-将username,password更改为自己数据库的密码，后期会把该文件gitignore掉
+
+#### (3)配置项目连接数据库的账号密码
+
+打开src/main/resources/application-datasource.yml，将username,password更改为自己数据库的密码，后期会把该文件gitignore掉
 
 ### 4.运行项目
 Run -> Run 'AccountSystemApplication' 即可启动项目
 
 ### 5.测试项目是否能正常运行
-在浏览器输入http://localhost:8080/test/hello，浏览器应返回
+在浏览器输入http://localhost:8080/test/hello ，浏览器应返回
 ```json
 {
     "data": {
