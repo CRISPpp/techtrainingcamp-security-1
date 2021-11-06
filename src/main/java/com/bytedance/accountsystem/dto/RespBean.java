@@ -48,6 +48,14 @@ public class RespBean {//返回对象的标准类
         return new RespBean(msg,201,obj);
     }
 
+    public static RespBean forbidden(String msg){
+        return new RespBean(msg,403,null);
+    }
+
+    public static RespBean forbidden(String msg, Object obj) {
+        return new RespBean(msg,403,obj);
+    }
+
     public static RespBean unprocessable(String msg){
         return new RespBean(msg,422,null);
     }
@@ -55,7 +63,6 @@ public class RespBean {//返回对象的标准类
     public static RespBean unprocessable(String msg, Object obj) {
         return new RespBean(msg,422,obj);
     }
-
 
     public static RespBean error(String msg) {
         return new RespBean( msg,500, null);
