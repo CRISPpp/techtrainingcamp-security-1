@@ -35,16 +35,16 @@ public class CaptchaService
 
 		String verifyCodeSrc = "data:image/png;base64," + base64bytes;
 		String verifyToken = UUID.randomUUID().toString();
-		redisRepository.insert(Constant.CAPTCHA_TOKEN, verifyToken, captcha,
+		redisRepository.put(Constant.REDIS_CAPTCHA_TOKEN, verifyToken, captcha,
 				Constant.CAPTCHA_EXPIRE_TIME, TimeUnit.MINUTES);
 
 		Map<String, Object> map = new HashMap<String, Object>()
 		{
 			{
+				put("decisionType", 0);
 				put("verifyToken", verifyToken);
 				put("verifyImg", verifyCodeSrc);
 				put("expireTime", Constant.CAPTCHA_EXPIRE_TIME);
-				put("DecisionType", 0);
 			}
 		};
 		return map;

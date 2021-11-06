@@ -6,8 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class RedisRepositoryTest
 {
@@ -16,7 +14,7 @@ class RedisRepositoryTest
 
 	@Test
 	public void test1() throws InterruptedException {
-		redisRepository.insert("ID","username","a",2,TimeUnit.SECONDS);
+		redisRepository.put("ID","username","a",2,TimeUnit.SECONDS);
 		System.out.println(redisRepository.get("ID", "username"));
 		Thread.sleep(2500);
 		System.out.println(redisRepository.get("ID", "username"));

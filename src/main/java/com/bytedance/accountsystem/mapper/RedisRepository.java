@@ -1,19 +1,31 @@
 package com.bytedance.accountsystem.mapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 @Component
 public class RedisRepository
 {
-	@Autowired
-	private RedisTemplate redisTemplate;
+//	@Autowired
+//	private RedisTemplate redisTemplate;
 
-	public boolean insert(String type,String key,String value,long timeout, TimeUnit unit) {
+	@Autowired
+	@Qualifier("redisTemplate")
+	private RedisTemplate redis;
+
+	public static RedisTemplate redisTemplate;
+	@PostConstruct
+	public void getRedisTemplate(){
+		redisTemplate=this.redis;
+	}
+
+	public boolean put(String type, String key, String value, long timeout, TimeUnit unit) {
 		String newKey=type+"$"+key;
 		redisTemplate.boundValueOps(newKey).set(value,timeout, unit);
 		return true;
