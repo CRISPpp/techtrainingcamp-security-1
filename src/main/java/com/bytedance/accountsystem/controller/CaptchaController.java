@@ -4,6 +4,7 @@ import com.bytedance.accountsystem.dto.RespBean;
 import com.bytedance.accountsystem.service.CaptchaService;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,7 @@ public class CaptchaController
 	@Autowired
 	private CaptchaService captchaService;
 
-	@RequestMapping("/captcha")
+	@PostMapping("/captcha") //Post形式的请求
 	public RespBean getCaptcha() throws IOException {
 		Map<String, Object> result ;
 		try {
