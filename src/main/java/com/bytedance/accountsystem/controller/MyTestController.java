@@ -1,8 +1,10 @@
 package com.bytedance.accountsystem.controller;
 
 import com.bytedance.accountsystem.dto.RespBean;
+import com.bytedance.accountsystem.mapper.RedisRepository;
 import com.bytedance.accountsystem.service.MyTestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

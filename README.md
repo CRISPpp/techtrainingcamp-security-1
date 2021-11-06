@@ -23,10 +23,18 @@ Download JDK... -> 版本选1.8 ->Eclipse Temurin (AdoptOpenJDK HotSpot)
 
 打开src/main/resources/application-datasource.yml，将username,password更改为自己数据库的密码，后期会把该文件gitignore掉
 
-### 4.运行项目
+### 4.配置Redis
+
+#### (1) 下载并配置启动Redis
+
+#### (2) 试运行
+
+尝试运行单元测试src/test/java/com/bytedance/accountsystem/mapper/RedisRepositoryTest.java，点击test1()方法前面的运行按钮，看到结果为先输出a, 2.5秒后输出null
+
+### 5.运行项目
 Run -> Run 'AccountSystemApplication' 即可启动项目
 
-### 5.测试项目是否能正常运行
+### 6.测试项目是否能正常运行
 在浏览器输入http://localhost:8080/test/hello ，浏览器应返回
 ```json
 {
