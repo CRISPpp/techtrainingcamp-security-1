@@ -1,6 +1,7 @@
 package com.bytedance.accountsystem.controller;
 
 import com.bytedance.accountsystem.annotation.RiskDetect;
+import com.bytedance.accountsystem.dto.Environment;
 import com.bytedance.accountsystem.dto.RespBean;
 import com.bytedance.accountsystem.service.CaptchaService;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
@@ -27,7 +28,7 @@ public class CaptchaController
 
 	@RiskDetect
 	@PostMapping("/captcha") //Post形式的请求
-	public RespBean getCaptcha(@RequestParam String deviceId,@RequestParam String ip) throws IOException {
+	public RespBean getCaptcha(Environment environment) throws IOException {
 		Map<String, Object> result ;
 		try {
 			result=captchaService.generateCaptcha();

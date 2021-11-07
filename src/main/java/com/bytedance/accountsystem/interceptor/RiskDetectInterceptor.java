@@ -1,6 +1,8 @@
 package com.bytedance.accountsystem.interceptor;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bytedance.accountsystem.config.Constant;
+import com.bytedance.accountsystem.dto.Environment;
 import com.bytedance.accountsystem.dto.RespBean;
 import com.bytedance.accountsystem.service.RiskService;
 import org.aopalliance.intercept.MethodInterceptor;
@@ -23,18 +25,22 @@ public class RiskDetectInterceptor implements MethodInterceptor {
         ParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
         String[] argumentNames = discoverer.getParameterNames(method);
 
+        //是否有environment参数
+        int environmentIndex = indexOfValue(argumentNames, "environment");
+        if (environmentIndex == -1) return RespBean.error("参数缺失");
+
+        //提取参数
+        Environment environment = (Environment) arguments[environmentIndex];
+        String deviceId = environment.getDeviceId();
+        String ip = environment.getIp();
+
         //是否有相关参数
-        int deviceIdIndex = indexOfValue(argumentNames, "deviceId");
-        int ipIndex = indexOfValue(argumentNames, "ip");
-        if (deviceIdIndex == -1 || ipIndex == -1) return RespBean.error("参数缺失");
+        if (deviceId == null || ip == null || "".equals(deviceId) || "".equals(ip)) return RespBean.error("参数缺失");
 
         // 是否安全
         int needSlideCaptcha = 0;
-        String deviceId = (String) arguments[deviceIdIndex];
-        String ip = (String) arguments[ipIndex];
         needSlideCaptcha = riskService.isArgumentSafe(deviceId);
         needSlideCaptcha = Math.max(needSlideCaptcha, riskService.isArgumentSafe(ip));
-
 
         if (needSlideCaptcha == 3) {//禁止访问
             Map<String, Object> map = new HashMap<String, Object>() {
@@ -44,7 +50,6 @@ public class RiskDetectInterceptor implements MethodInterceptor {
             };
             return RespBean.forbidden("禁止访问", map);
         }
-
 
         // 正常 或 滑块验证
         Object object = invocation.proceed();
