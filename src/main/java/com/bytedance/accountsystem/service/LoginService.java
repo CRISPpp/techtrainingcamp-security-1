@@ -1,6 +1,7 @@
 package com.bytedance.accountsystem.service;
 
 import com.bytedance.accountsystem.config.Constant;
+import com.bytedance.accountsystem.exception.PasswordInvalidException;
 import com.bytedance.accountsystem.mapper.RedisRepository;
 import com.bytedance.accountsystem.mapper.UserMapper;
 import com.bytedance.accountsystem.utils.MD5Utils;
@@ -23,10 +24,10 @@ public class LoginService {
     @Autowired
     private RedisRepository redisRepository;
 
-    public Map<String,Object> login(String username, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public Map<String,Object> login(String username, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, PasswordInvalidException {
         String encodedPassword = MD5Utils.encodeByMd5(password);
         if (userMapper.selectUserByUsernameAndPassword(username, encodedPassword) == null) {
-            return null;
+            throw new PasswordInvalidException();
         } else {
             String sessionId = generateSessionId();
             redisRepository.put(Constant.REDIS_SESSION_ID, sessionId, username, Constant.LOGIN_KEEP_TIME, TimeUnit.MINUTES);

@@ -1,7 +1,11 @@
 package com.bytedance.accountsystem.controller;
 
+import com.bytedance.accountsystem.annotation.CaptchaVerify;
+import com.bytedance.accountsystem.annotation.RiskDetect;
 import com.bytedance.accountsystem.dto.Environment;
 import com.bytedance.accountsystem.dto.RespBean;
+import com.bytedance.accountsystem.dto.Verify;
+import com.bytedance.accountsystem.exception.PasswordInvalidException;
 import com.bytedance.accountsystem.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,12 +22,17 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    @CaptchaVerify
+    @RiskDetect
     @PostMapping("/login")    //登录有两种方式
-    public RespBean login(Environment environment, @RequestParam String username, @RequestParam String password) {
+    public RespBean login(Environment environment, Verify verify, @RequestParam String username, @RequestParam String password) {
         Map<String,Object> result;
         try {
             result = loginService.login(username, password);
-        } catch (Exception e) {
+        }catch (PasswordInvalidException e){
+            return RespBean.unprocessable("用户名或密码错误");
+        }
+        catch (Exception e) {
             return RespBean.unprocessable("登录失败"+e.getMessage());
         }
         if (result != null) {

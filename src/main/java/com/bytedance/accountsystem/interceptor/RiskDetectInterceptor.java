@@ -4,9 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.bytedance.accountsystem.config.Constant;
 import com.bytedance.accountsystem.dto.Environment;
 import com.bytedance.accountsystem.dto.RespBean;
+import com.bytedance.accountsystem.service.CaptchaService;
 import com.bytedance.accountsystem.service.RiskService;
+import com.bytedance.accountsystem.utils.ApplicationContextHelperUtil;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
 
@@ -15,11 +18,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RiskDetectInterceptor implements MethodInterceptor {
-    private RiskService riskService = new RiskService();
+    @Autowired
+    private RiskService riskService;
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
-
         Method method = invocation.getMethod();
         Object[] arguments = invocation.getArguments();
         ParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
@@ -48,17 +51,20 @@ public class RiskDetectInterceptor implements MethodInterceptor {
                     put("decisionType", 3);
                 }
             };
-            return RespBean.forbidden("禁止访问", map);
+            return RespBean.danger("您操作过于频繁，已被禁止访问", map);
         }
 
         // 正常 或 滑块验证
         Object object = invocation.proceed();
+
         if (needSlideCaptcha > 0 && object != null) {
             RespBean resp = (RespBean) object;
             Map<String, Object> data = (Map<String, Object>) resp.getData();
+            if (data == null) data = new HashMap<String, Object>();
             data.put("decisionType", needSlideCaptcha);
             resp.setData(data);
-            return resp;
+            String msg = needSlideCaptcha == 1 ? "您此次登录需要填写数字验证码" : "您操作过于频繁，请稍等后再操作";
+            return RespBean.danger(msg, resp);
         }
         return object;
     }

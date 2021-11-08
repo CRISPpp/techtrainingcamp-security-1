@@ -64,6 +64,14 @@ public class RespBean {//返回对象的标准类
         return new RespBean(msg,422,obj);
     }
 
+    public static RespBean danger(String msg) {
+        return new RespBean(msg);
+    }
+
+    public static RespBean danger(String msg, Object obj) {
+        return new RespBean(msg,420,obj);
+    }
+
     public static RespBean error(String msg) {
         return new RespBean( msg,500, null);
     }

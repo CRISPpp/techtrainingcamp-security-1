@@ -13,19 +13,18 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 @Configuration
-public class RiskDetectInterceptorConfig
+public class CaptchaVerifyInterceptorConfig
 {
 	@Autowired
-	private RiskDetectInterceptor advice;
+	private CaptchaVerifyInterceptor advice;
 
 	@Bean
-	public DefaultPointcutAdvisor getDefaultPointcutAdvisor() {
+	public DefaultPointcutAdvisor getDefaultPointcutAdvisor2() {
 		DefaultPointcutAdvisor pointcutAdvisor = new DefaultPointcutAdvisor();
-		pointcutAdvisor.setOrder(1);
+		pointcutAdvisor.setOrder(2);
 
 		//基于方法注解进行拦截
-		AnnotationMatchingPointcut pointcut = new AnnotationMatchingPointcut(null, RiskDetect.class);
-//		RiskDetectInterceptor advice = new RiskDetectInterceptor();
+		AnnotationMatchingPointcut pointcut = new AnnotationMatchingPointcut(null, CaptchaVerify.class);
 		pointcutAdvisor.setPointcut(pointcut);
 		pointcutAdvisor.setAdvice(advice);
 
