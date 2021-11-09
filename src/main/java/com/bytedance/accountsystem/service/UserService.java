@@ -2,13 +2,13 @@ package com.bytedance.accountsystem.service;
 
 import com.bytedance.accountsystem.config.Constant;
 import com.bytedance.accountsystem.exception.PasswordInvalidException;
+import com.bytedance.accountsystem.exception.RegisterException;
 import com.bytedance.accountsystem.mapper.RedisRepository;
 import com.bytedance.accountsystem.mapper.UserMapper;
 import com.bytedance.accountsystem.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -19,12 +19,30 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-@Service// 说明该类是Service
-public class LoginService {
-    @Autowired
-    private UserMapper userMapper;
+@Service
+public class UserService {
     @Autowired
     private RedisRepository redisRepository;
+    @Autowired
+    private UserMapper userMapper;
+
+    public boolean register(String username, String password
+            , String phoneNumber) throws RegisterException, UnsupportedEncodingException, NoSuchAlgorithmException {
+
+        /*
+         * 正则匹配手机号 密码*/
+
+        if (userMapper.selectCountByUsername(username) != 0) {
+            throw new RegisterException("用户名已存在");
+        }
+        if (userMapper.selectCountByPhoneNumber(phoneNumber) != 0) {
+            throw new RegisterException("手机号已被注册");
+        }
+
+        String encodePassword = MD5Utils.encodeByMd5(password);
+        return userMapper.insertUser(username, encodePassword, phoneNumber) == 1;
+
+    }
 
     public Map<String, Object> login(String username, String password, HttpSession request) throws UnsupportedEncodingException, NoSuchAlgorithmException, PasswordInvalidException {
         String encodedPassword = MD5Utils.encodeByMd5(password);
@@ -54,6 +72,22 @@ public class LoginService {
 //             }
 //        return null;   //否则返回空
 //    }
+
+    public boolean logout(HttpSession session) {
+        String sessionId = (String) session.getAttribute(Constant.HTTP_SESSION_ID);
+        session.removeAttribute(Constant.HTTP_SESSION_ID);
+        return redisRepository.delete(Constant.REDIS_SESSION_ID, sessionId);
+    }
+
+    public boolean cancelAccount(HttpSession session) {
+        String sessionId = (String) session.getAttribute(Constant.HTTP_SESSION_ID);
+        session.removeAttribute(Constant.HTTP_SESSION_ID);
+        redisRepository.delete(Constant.REDIS_SESSION_ID, sessionId);
+        String username = redisRepository.get(Constant.REDIS_SESSION_ID, sessionId);
+        if (username == null) return false;
+        return userMapper.deleteByUsername(username) == 1;
+    }
+
 
 
     public static synchronized String generateSessionId() {     //sessionid生成算法
@@ -89,6 +123,4 @@ public class LoginService {
         }
         return null;
     }
-
-
 }
