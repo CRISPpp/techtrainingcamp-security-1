@@ -26,7 +26,7 @@ public class CaptchaController
 	@Autowired
 	private CaptchaService captchaService;
 
-	@RiskDetect
+//	@RiskDetect
 	@PostMapping("/captcha") //Post形式的请求
 	public RespBean getCaptcha(Environment environment) throws IOException {
 		Map<String, Object> result ;

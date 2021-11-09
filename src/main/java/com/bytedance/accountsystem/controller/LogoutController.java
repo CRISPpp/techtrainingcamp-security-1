@@ -4,23 +4,39 @@ import com.bytedance.accountsystem.dto.Environment;
 import com.bytedance.accountsystem.dto.RespBean;
 import com.bytedance.accountsystem.service.LogoutService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 //import sun.tools.java.Environment;
 @RestController
+@RequestMapping("/user")
 public class LogoutController {
     @Autowired
     private LogoutService logoutService;
-    public RespBean logout(Environment environment, int actionType, String sessionId) {
-        if(logoutService.userlogout(environment, actionType, sessionId)){
-            if(actionType == 1) return RespBean.ok("登出成功");
-            else return RespBean.ok("注销成功");
+
+    @PutMapping("/logout")
+    public RespBean logout(Environment environment, HttpSession session) {
+        try {
+            logoutService.logout(session);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else{
-            if(actionType == 1) return RespBean.error("登出失败");
-            else return RespBean.error("注销失败");
-        }
+        return RespBean.ok("登出成功");
+
     }
 
+    @PutMapping
+    public RespBean cancelAccount(Environment environment,  HttpSession session) {
+        try {
+            logoutService.cancelAccount(session);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return RespBean.ok("注销成功");
+    }
 }

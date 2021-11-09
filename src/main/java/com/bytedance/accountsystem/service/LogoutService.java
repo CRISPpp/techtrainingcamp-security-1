@@ -8,25 +8,28 @@ import com.bytedance.accountsystem.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @Service
 public class LogoutService {
     @Autowired
     private RedisRepository redisRepository;
     @Autowired
     private UserMapper userMapper;
-    public boolean userlogout(Environment environment, int actionType, String sessionId) {
-        String userName = redisRepository.get(Constant.REDIS_SESSION_ID, sessionId);
-        //TODO
-        if(userName == null) return false; //找不到返回false;
-        //登出
-        if(actionType == 1){
-            redisRepository.redisTemplate.delete(userName);
-        }
-        //注销
-        else{
-            redisRepository.redisTemplate.delete(userName);
-            userMapper.deleteByUsername(userName);
-        }
-        return true;
+
+    public boolean logout(HttpSession session) {
+        String sessionId = (String) session.getAttribute(Constant.HTTP_SESSION_ID);
+        session.removeAttribute(Constant.HTTP_SESSION_ID);
+        return redisRepository.delete(Constant.REDIS_SESSION_ID, sessionId);
+    }
+
+    public boolean cancelAccount(HttpSession session) {
+        String sessionId = (String) session.getAttribute(Constant.HTTP_SESSION_ID);
+        session.removeAttribute(Constant.HTTP_SESSION_ID);
+        redisRepository.delete(Constant.REDIS_SESSION_ID, sessionId);
+        String username = redisRepository.get(Constant.REDIS_SESSION_ID, sessionId);
+        if (username == null) return false;
+        return userMapper.deleteByUsername(username) == 1;
     }
 }

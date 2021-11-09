@@ -8,6 +8,8 @@ import com.bytedance.accountsystem.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -24,17 +26,17 @@ public class LoginService {
     @Autowired
     private RedisRepository redisRepository;
 
-    public Map<String,Object> login(String username, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, PasswordInvalidException {
+    public Map<String, Object> login(String username, String password, HttpSession request) throws UnsupportedEncodingException, NoSuchAlgorithmException, PasswordInvalidException {
         String encodedPassword = MD5Utils.encodeByMd5(password);
         if (userMapper.selectUserByUsernameAndPassword(username, encodedPassword) == null) {
             throw new PasswordInvalidException();
         } else {
             String sessionId = generateSessionId();
             redisRepository.put(Constant.REDIS_SESSION_ID, sessionId, username, Constant.LOGIN_KEEP_TIME, TimeUnit.MINUTES);
-            return new HashMap<String,Object>(){{
-                put("sessionId",sessionId);
-                put("expireTime",Constant.LOGIN_KEEP_TIME);
-                put("decisionType",0);
+            request.setAttribute(Constant.HTTP_SESSION_ID, sessionId);
+            return new HashMap<String, Object>() {{
+                put("expireTime", Constant.LOGIN_KEEP_TIME);
+                put("decisionType", 0);
             }};
         }
     }

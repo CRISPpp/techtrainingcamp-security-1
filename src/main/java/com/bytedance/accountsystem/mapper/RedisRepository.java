@@ -36,4 +36,8 @@ public class RedisRepository
 		return (String) redisTemplate.boundValueOps(newKey).get();
 	}
 
+	public boolean delete(String type,String key){
+		String newKey=type+"$"+key;
+		return redisTemplate.delete(newKey);
+	}
 }

@@ -9,10 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class LoginServiceTest {
@@ -24,8 +21,8 @@ class LoginServiceTest {
 
     @Test
     public void test1() throws UnsupportedEncodingException, NoSuchAlgorithmException, PasswordInvalidException {
-        Map<String,Object> map= loginService.login("test","test");
-        System.out.println(map);
-        System.out.println(redisRepository.get(Constant.REDIS_SESSION_ID, (String) map.get("sessionId")));
+//        Map<String,Object> map= loginService.login("test","test", request);
+//        System.out.println(map);
+//        System.out.println(redisRepository.get(Constant.REDIS_SESSION_ID, (String) map.get("sessionId")));
     }
 }

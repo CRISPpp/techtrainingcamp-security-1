@@ -2,6 +2,9 @@ package com.bytedance.accountsystem.config;
 
 public class Constant
 {
+	//---HttpSession常量---
+	public static String HTTP_SESSION_ID = "sessionId";
+
 	// ---Redis Type常量---
 	public static String REDIS_CAPTCHA_TOKEN ="CAPTCHA_TOKEN";
 	public static String REDIS_RISK_SLIDE_CAPTCHA ="REDIS_RISK_SLIDE_CAPTCHA";
