@@ -66,12 +66,12 @@ const LoginFormUI = (props) => {
 
             </Col>
             <Col flex="auto"/>
-            <Col flex="none">
+            <Col flex="100px">
               <Popover content={<div>点击刷新</div>}>
                 <Image src={props.captchaImg} height='34px' preview={false} onClick={props.getCaptcha} alt="暂停访问">
                 </Image>
               </Popover>
-              <div style={{color: '#999999', textAlign: 'center'}}>看不清?点击刷新</div>
+              <div style={{color: '#999999', textAlign: 'center'}}>点击可刷新</div>
             </Col>
           </Row>
         </Form.Item>
