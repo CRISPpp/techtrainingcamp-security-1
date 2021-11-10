@@ -1,5 +1,13 @@
 # 风控账号系统
 
-后端内容见BackEnd文件夹
+### 后端
 
-前段内容见FrontEnd文件夹
+##### 技术栈：Spring Boot + MyBatis Plus + Redis
+
+见BackEnd文件夹
+
+### 前端
+
+##### 技术栈：React + Ant Design
+
+见FrontEnd文件夹
