@@ -1,0 +1,35 @@
+@media screen and (min-width: 521px) {
+    #LoginCard {
+        float: right;
+        margin: 6% 10%;
+        width: 400px
+    }
+    #CardTabs{
+        margin: 0 auto;
+        width: 300px
+    }
+}
+
+@media screen and (max-width: 520px) {
+    #LoginCard {
+        margin: 10% auto;
+        width: 320px;
+    }
+    #CardTabs{
+        margin: 0 auto;
+        width: 280px
+    }
+}
+
+@media screen and (max-width: 320px) {
+    #LoginCard {
+        margin: 10% auto;
+        width: 300px;
+    }
+    #CardTabs{
+        margin: 0 auto;
+        width: 270px
+    }
+}
+
+
