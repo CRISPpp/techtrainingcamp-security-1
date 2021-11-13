@@ -12,6 +12,7 @@
     <artifactId>AccountSystem</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>AccountSystem</name>
+    <packaging>war</packaging>
     <description>AccountSystem</description>
     <properties>
         <java.version>1.8</java.version>
@@ -20,12 +21,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <!--<exclusions>-->
-            <!--    <exclusion>-->
-            <!--        <groupId>org.junit.vintage</groupId>-->
-            <!--        <artifactId>junit-vintage-engine</artifactId>-->
-            <!--    </exclusion>-->
-            <!--</exclusions>-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

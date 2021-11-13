@@ -19,10 +19,9 @@ export const getDeviceId=()=>{
   for (let i = 0; i < lim; i++) {
     id+=getHash(navigator.plugins[i].name);
   }
-  // return id+"678";
-  return "5313"
+  return "deviceId"+id;
 }
 
 export const getIp=()=>{
-  return "52"
+  return "ip"+getDeviceId();
 }

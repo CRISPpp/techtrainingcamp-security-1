@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import {Component} from "react";
 import TempMainPageUI from "./TempMainPageUI";
-import ReqPath from "../../api/url";
+import ReqPath, { FE_BASE_URL } from "../../api/url";
 import { message} from "antd";
 import axios from "axios";
 import {HTTPCode} from "../../constant";
@@ -18,7 +18,7 @@ class TempMainPage extends Component {
       if (response.metaInfo.status === HTTPCode.ok) {
         message.success({content: "登出成功", duration: 5})
         sessionStorage.removeItem("isLogin");
-        window.location.href = '/#/login';
+        window.location.href = FE_BASE_URL+'/#/login';
       } else {
         message.error({content: "登出失败：" + response.metaInfo.msg, duration: 5})
       }
@@ -37,7 +37,7 @@ class TempMainPage extends Component {
       if (response.metaInfo.status === HTTPCode.ok) {
         message.success({content: "注销成功", duration: 5})
         sessionStorage.removeItem("isLogin");
-        window.location.href = '/#/login';
+        window.location.href = FE_BASE_URL+'/#/login';
       } else {
         message.error({content: "注销失败：" + response.metaInfo.msg, duration: 5})
       }

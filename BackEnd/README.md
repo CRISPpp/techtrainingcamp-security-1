@@ -1,13 +1,11 @@
 # 项目说明
 
-### 一、项目代码结构说明
-
-#### 后端：
+### 一、项目后端代码结构说明
 
 ```
 |-src (源代码)
-  |-main (工程代码)
-  | |-java (本体代码)
+  |-main
+  | |-java
   | | |-com.bytedance.accountsystem (项目包名)
   | |   |-AccountSystemApplication.java (项目主程序(入口))
   | |   |-dto 				(Controller与前端的传输类)
@@ -53,3 +51,13 @@
    3. 特性：使用Spring AOP功能设计注解@RiskDetect，需要进行风险监测的方法（接口）仅需在方法前加上此注解，拦截器便可对请求的进行拦截与风险校验，不需要在方法里增加相关业务逻辑代码，符合高内聚，低耦合的设计理念。
 4. 异常登录
    1. 对于登录密码错误的请求，设置其需要验证码进行登录
+
+
+
+### 三、编译运行
+
+1. 安装JDK1.8，maven包管理器，MySQL8.0，Redis，Tomcat
+2. 启动MySQL，Redis，Tomcat
+3. 初始化数据库，将src/main/resource中database.sql 置于MySQL中执行
+4. mvn clean install 编译打包项目
+5. 将target目录下生成的war包置于Tomcat服务器中即可在localhost:8080访问

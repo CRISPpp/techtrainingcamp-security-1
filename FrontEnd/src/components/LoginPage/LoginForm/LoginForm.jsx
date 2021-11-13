@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import {Component} from "react";
 import LoginFormUI from "./LoginFormUI";
 import {getDeviceId, getIp} from "../../../utils/EnvironmentTools";
-import ReqPath from "../../../api/url";
+import ReqPath, { FE_BASE_URL } from "../../../api/url";
 import axios from "axios";
 import {message} from "antd";
 import {HTTPCode} from "../../../constant";
@@ -45,7 +45,7 @@ class LoginForm extends Component {
       if (response.metaInfo.status === HTTPCode.ok) {
         message.success({content: "登录成功", key: loginKey, duration: 5})
         sessionStorage.setItem("isLogin", "true");
-        window.location.href = '/';
+        window.location.href = FE_BASE_URL+ '/';
       } else {
         message.error({content: "登录失败：" + response.metaInfo.msg, key: loginKey, duration: 5})
       }

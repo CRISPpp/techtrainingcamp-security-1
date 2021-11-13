@@ -1,7 +1,7 @@
-const BASE_URL = "http://localhost:8080";
-
+export const BE_BASE_URL = "http://119.91.73.146:8080/AccountSystem";
+export const FE_BASE_URL = "http://119.91.73.146/account"
 function generateUrl(url) {
-  return BASE_URL + url;
+  return BE_BASE_URL + url;
 }
 
 const ReqPath = {

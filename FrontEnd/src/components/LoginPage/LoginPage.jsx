@@ -58,7 +58,7 @@ class LoginPage extends Component {
       if (response.metaInfo.status !== HTTPCode.ok
         // && response.metaInfo.status !== HTTPCode.danger
       ) {
-        message.warning({content: response.metaInfo.msg + "LoginPage", duration: 5});
+        message.warning({content: response.metaInfo.msg, duration: 5});
       }
     }).catch(res => {
       console.log("获取验证码失败", res);
